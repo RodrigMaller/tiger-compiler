@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "util.h"
+#include "utils.h"
 
 void *checked_malloc(int len)
 {
-    void *p = malloc*(len);
+    void *p = malloc(len);
     assert(p);
     return p;
 }
@@ -18,10 +18,17 @@ string String(char *str)
     return p;
 }
 
-bool_list bool_list(bool head, bool_list tail)
+list bool_list(bool b, list tail)
 {
-    bool_list list = checked_malloc(sizeof(*list));
-    list->head = head;
-    list->tail = tail;
-    return list;
+    list l = checked_malloc(sizeof(*l));
+    l->b = b;
+    l->tail = tail;
+    return l;
+}
+list int_list(int i, list tail)
+{
+    list l = checked_malloc(sizeof *l);
+    l->i = i;
+    l->tail = tail;
+    return l;
 }
