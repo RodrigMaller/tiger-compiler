@@ -23,6 +23,9 @@ void adj(void)
 }
 
 %}
+
+DIGIT   [0-9]
+ID      [a-zA-Z][a-zA-Z0-9]*
      
 %%
      
@@ -68,3 +71,5 @@ function        { adj(); return TK_FUNCTION; }
 var             { adj(); return TK_VAR; }
 type            { adj(); return TK_TYPE; }
 
+{DIGIT}+        { adj(); yylval.ival = atoi(yytext); return TK_INT; }
+{ID}            { adj(); yylval.sval = string(yytext); return TK_ID; }
