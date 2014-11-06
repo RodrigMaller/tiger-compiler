@@ -6,7 +6,7 @@ typedef char bool;
 #define TRUE 1
 #define FALSE 0
 
-typedef struct list *list;
+typedef struct list_ *list;
 struct list
 {
     union
