@@ -21,7 +21,7 @@ struct tab_table_
 
 static binder Binder(void *key, void *value, binder next, void *prevtop)
 {
-    binder b = checked_malloc(sizeof(*v));
+    binder b = checked_malloc(sizeof(*b));
     b->key = key;
     b->value = value;
     b->next = next;

@@ -25,6 +25,7 @@ list bool_list(bool b, list tail)
     l->tail = tail;
     return l;
 }
+
 list int_list(int i, list tail)
 {
     list l = checked_malloc(sizeof *l);

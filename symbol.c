@@ -58,25 +58,19 @@ void s_enter(s_table tab, s_symbol sym, void *value)
     tab_enter(tab, sym, value);
 }
 
-void s_lookup(s_table tab, s_symbol sym)
+void *s_lookup(s_table tab, s_symbol sym)
 {
     return tab_lookup(tab, sym);
 }
 
-static s_symbol _mark_sym = NULL;
+static struct s_symbol_ _mark_sym = {"<mark>", 0};
 
-void s_begin_scope(tab_table tab)
+void s_begin_scope(s_table tab)
 {
-    if(!_mark_sym)
-    {
-        _mark_sym = checked_malloc(sizeof(*_mark_sym));
-        _mark_sym->name = "<mark>";
-        _mark_sym->next = NULL;
-    }
-    s_enter(tab, _mark_sym, NULL);
+    s_enter(tab, &_mark_sym, NULL);
 }
 
-void s_end_scope(tab_table tab)
+void s_end_scope(s_table tab)
 {
     s_symbol sym;
     

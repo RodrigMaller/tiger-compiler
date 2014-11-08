@@ -2,7 +2,7 @@
 
 typedef struct tab_table_ *tab_table;
 
-table tab_empty(void);
+tab_table tab_empty(void);
 
 void tab_enter(tab_table t, void *key, void *value);
 
