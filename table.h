@@ -1,13 +1,13 @@
 #define TABSIZE 127
 
-typedef struct tab_table_ *tab_table;
+typedef struct TAB_table_ *TAB_table;
 
-tab_table tab_empty(void);
+TAB_table TAB_empty(void);
 
-void tab_enter(tab_table t, void *key, void *value);
+void TAB_enter(TAB_table t, void *key, void *value);
 
-void *tab_lookup(tab_table t, void *key);
+void *TAB_lookup(TAB_table t, void *key);
 
-void *tab_pop(tab_table t);
+void *TAB_pop(TAB_table t);
 
-void tab_dump(tab_table t, void (*show)(void *key, void *value));
+void TAB_dump(TAB_table t, void (*show)(void *key, void *value));

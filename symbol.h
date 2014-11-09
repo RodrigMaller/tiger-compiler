@@ -3,20 +3,20 @@
 
 #define SIZE 109
 
-typedef struct s_symbol_ *s_symbol;
+typedef struct S_symbol_ *S_symbol;
 
-s_symbol S_Symbol(string);
+S_symbol S_Symbol(string);
 
-string s_name(s_symbol);
+string S_name(S_symbol);
 
-typedef struct tab_table_ *s_table;
+typedef struct TAB_table_ *S_table;
 
-s_table s_empty(void);
+S_table S_empty(void);
 
-void s_enter(s_table tab, s_symbol sym, void *value);
+void S_enter(S_table tab, S_symbol sym, void *value);
 
-void *s_lookup(s_table tab, s_symbol sym);
+void *S_lookup(S_table tab, S_symbol sym);
 
-void s_begin_scope(s_table tab);
+void S_begin_scope(S_table tab);
 
-void s_end_scope(s_table tab);
+void S_end_scope(S_table tab);

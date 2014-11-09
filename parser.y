@@ -1,9 +1,15 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
+
 #include "utils.h"
 #include "errormsg.h"
+#include "symbol.h"
+#include "absyn.h"
 
 int yylex(void);
+
+ABS_expr absyn_root;
 
 void yyerror(char *s)
 {
@@ -16,6 +22,8 @@ void yyerror(char *s)
     int pos;
     int ival;
     string sval;
+    ABS_var var;
+    ABS_expr expr;
 }
 
 %token <sval> TK_ID TK_STRING
@@ -38,30 +46,14 @@ void yyerror(char *s)
 %left <pos> TK_TIMES TK_DIVIDE
 %left <pos> TK_UMINUS
 
-%type <exp> program exp
+%type <exp> exp program
 
 %start program
 
 %%
 
 program: 
-  exp
+  exp       { absyn_root = $1; }
 
 exp: 
-  ID
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  ID        { $$ = abs_var_expr(EM_tok_pos, ABS_Simple_var(EM_tok_pos, S_symbol($1))); }

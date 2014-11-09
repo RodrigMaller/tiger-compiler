@@ -1,43 +1,43 @@
 #include "symbol.h"
 #include "utils.h"
 
-typedef int abs_pos;
+typedef int ABS_pos;
 
-typedef struct abs_var_ *abs_var;
-typedef struct abs_expr_ *abs_expr;
-typedef struct abs_dec_ *abs_dec;
-typedef struct abs_type_ *abs_type;
+typedef struct ABS_var_ *ABS_var;
+typedef struct ABS_expr_ *ABS_expr;
+typedef struct ABS_dec_ *ABS_dec;
+typedef struct ABS_type_ *ABS_type;
 
-typedef struct abs_dec_list_ *abs_dec_list;
-typedef struct abs_expr_list_ *abs_expr_list;
-typedef struct abs_field_ *abs_field;
-typedef struct abs_field_list_ *abs_field_list;
-typedef struct abs_fundec_ *abs_fundec;
-typedef struct abs_fundec_list_ *abs_fundec_list;
-typedef struct abs_namety_ *abs_namety;
-typedef struct abs_namety_list_ *abs_namety_list;
-typedef struct abs_efield_ *abs_efield;
-typedef struct abs_efield_list_ *abs_efield_list;
+typedef struct ABS_dec_list_ *ABS_dec_list;
+typedef struct ABS_expr_list_ *ABS_expr_list;
+typedef struct ABS_field_ *ABS_field;
+typedef struct ABS_field_list_ *ABS_field_list;
+typedef struct ABS_fundec_ *ABS_fundec;
+typedef struct ABS_fundec_list_ *ABS_fundec_list;
+typedef struct ABS_namety_ *ABS_namety;
+typedef struct ABS_namety_list_ *ABS_namety_list;
+typedef struct ABS_efield_ *ABS_efield;
+typedef struct ABS_efield_list_ *ABS_efield_list;
 
 typedef enum
 {  
     ABS_PLUS, ABS_MINUS, ABS_TIMES, ABS_DIVIDE
     ABS_EQ, ABS_NEQ, ABS_LT, ABS_LE, ABS_GT, ABS_GE
-} abs_oper;
+} ABS_oper;
 
-struct abs_var_
+struct ABS_var_
 {
     enum { ABS_SIMPLE_VAR, ABS_FIELD_VAR, ABS_SUBSCRIPT_VAR } kind;
-    abs_pos pos;
+    ABS_pos pos;
     union 
     {
-        s_symbol simple;
-        struct { abs_var var; s_symbol sym; } field;
-        struct { abs_var var; abs_expr expr; } subscript;
+        S_symbol simple;
+        struct { ABS_var var; S_symbol sym; } field;
+        struct { ABS_var var; ABS_expr expr; } subscript;
     } u;
 };
 
-struct abs_expr_
+struct ABS_expr_
 {
     enum 
     {
@@ -46,93 +46,93 @@ struct abs_expr_
         ABS_ASSIGN_EXPR, ABS_IF_EXPR, ABS_WHILE_EXPR, ABS_FOR_EXPR,
         ABS_BREAK_EXPR, ABS_LET_EXPR, ABS_ARRAY_EXPR
     } kind;
-    abs_pos pos;
+    ABS_pos pos;
     union
     {
-        abs_var var;
+        ABS_var var;
         /* nil; */
         int intt;
         string stringg;
-        struct { s_symbol func; abs_expr_list args; } call;
-        struct { abs_oper oper; abs_expr left; abs_expr right; } op;
-        struct { s_symbol type; abs_efield_list fields; } record;
-        abs_expr_list seq;
-        struct { abs_var var; abs_expr expr; } assign;
-        struct { abs_expr test, then, elsee; } iff;
-        struct { abs_expr test, body; } whilee;
-        struct { s_symbol var; abs_expr lo, hi, body; bool escape; } forr;
+        struct { S_symbol func; ABS_expr_list args; } call;
+        struct { ABS_oper oper; ABS_expr left; ABS_expr right; } op;
+        struct { S_symbol type; ABS_efield_list fields; } record;
+        ABS_expr_list seq;
+        struct { ABS_var var; ABS_expr expr; } assign;
+        struct { ABS_expr test, then, elsee; } iff;
+        struct { ABS_expr test, body; } whilee;
+        struct { S_symbol var; ABS_expr lo, hi, body; bool escape; } forr;
         /* breakk; */
-        struct { abs_dec_list decs; abs_expr body; } let;
-        struct { s_symbol type; abs_expr size, init; } array;
+        struct { ABS_dec_list decs; ABS_expr body; } let;
+        struct { S_symbol type; ABS_expr size, init; } array;
     } u;
 };
 
-struct abs_dec_
+struct ABS_dec_
 {
     enum { ABS_FUNCTION_DEC, ABS_VAR_DEC, ABS_TYPE_DEC } kind;
-    abs_pos pos;
+    ABS_pos pos;
     union 
     {
-        abs_fundec_list function;
-        struct { s_symbol var; s_symbol type; abs_expr init; bool escape; } var;
-        abs_namety_list type;
+        ABS_fundec_list function;
+        struct { S_symbol var; S_symbol type; ABS_expr init; bool escape; } var;
+        ABS_namety_list type;
     } u;
 };
 
-struct abs_type_
+struct ABS_type_
 {
     enum { ABS_NAME_TYPE, ABS_RECORD_TYPE, ABS_ARRAY_TYPE } kind;
-    abs_pos pos;
+    ABS_pos pos;
     union
     {
-        s_symbol name;
-        abs_field_list record;
-        s_symbol array;
+        S_symbol name;
+        ABS_field_list record;
+        S_symbol array;
     } u;
 };
 
-struct abs_field_ { s_symbol name, type; abs_pos pos; bool escape; };
-struct abs_field_list_ { abs_field head; abs_field_list tail; };
-struct abs_efield_ { s_symbol name; abs_expr expr; };
-struct abs_efild_list_ { abs_efield head; abs_efield_list tail; };
-struct abs_expr_list_ { abs_expr head; abs_expr_list tail; };
-struct abs_fundec_ { abs_pos pos; s_symbol name; abs_field_list params; s_symbol result; abs_expr body; };
-struct abs_fundec_list_ { abs_fundec head; abs_fundec_list tail; };
-struct abs_dec_list_ { abs_dec head; abs_dec_list tail; };
-struct abs_namety_ { s_symbol name; abs_expr expr; };
-struct abs_namety_list_ { abs_namety head; abs_namety_list tail; };
+struct ABS_field_ { S_symbol name, type; ABS_pos pos; bool escape; };
+struct ABS_field_list_ { ABS_field head; ABS_field_list tail; };
+struct ABS_efield_ { S_symbol name; ABS_expr expr; };
+struct ABS_efild_list_ { ABS_efield head; ABS_efield_list tail; };
+struct ABS_expr_list_ { ABS_expr head; ABS_expr_list tail; };
+struct ABS_fundec_ { ABS_pos pos; S_symbol name; ABS_field_list params; S_symbol result; ABS_expr body; };
+struct ABS_fundec_list_ { ABS_fundec head; ABS_fundec_list tail; };
+struct ABS_dec_list_ { ABS_dec head; ABS_dec_list tail; };
+struct ABS_namety_ { S_symbol name; ABS_expr expr; };
+struct ABS_namety_list_ { ABS_namety head; ABS_namety_list tail; };
 
-abs_var abs_simple_var(abs_pos pos, s_symbol sym);
-abs_var abs_field_var(abs_pos pos, abs_var var, s_symbol sym);
-abs_var abs_subscript_var(abs_pos pos, abs_var var, abs_expr expr);
-abs_expr abs_var_expr(abs_pos pos, abs_var var);
-abs_expr abs_nil_expr(abs_pos pos);
-abs_expr abs_int_expr(abs_pos pos, int i);
-abs_expr abs_string_expr(abs_pos pos, string str);
-abs_expr abs_call_expr(abs_pos pos, s_symbol func, abs_expr_list args);
-abs_expr abs_op_expr(abs_pos pos, abs_expr left, abs_expr right);
-abs_expr abs_record_expr(abs_pos pos, s_symbol type, abs_efield_list fields);
-abs_expr abs_seq_expr(abs_pos pos, abs_expr_list seq);
-abs_expr abs_assign_expr(abs_pos pos, abs_var var, abs_expr expr);
-abs_expr abs_if_expr(abs_pos pos, abs_expr test, abs_expr then, abs_expr elsee);
-abs_expr abs_while_expr(abs_pos pos, abs_expr test, abs_expr body);
-abs_expr abs_for_expr(abs_pos pos, s_symbol var, abs_expr lo, abs_expr hi, abs_expr body);
-abs_expr abs_break_expr(abs_pos pos);
-abs_expr abs_let_expr(abs_pos pos, abs_dec_list decs, abs_expr body);
-abs_expr abs_array_expr(abs_pos pos, s_symbol type, abs_expr size, abs_expr init);
-abs_dec abs_function_dec(abs_pos pos, abs_fundec_list function);
-abs_dec abs_var_dec(abs_pos pos, s_symbol var, s_symbol type, abs_expr init);
-abs_dec abs_type_dec(abs_pos pos, abs_namety_list type);
-abs_type abs_name_type(abs_pos pos, s_symbol name);
-abs_type abs_record_type(abs_pos pos, abs_field_list record);
-abs_type abs_array_type(abs_pos pos, s_symbol array);
-abs_field abs_Field(abs_pos pos, s_symbol name, s_symbol type);
-abs_field_list abs_Field_list(abs_field head, abs_field_list tail);
-abs_expr_list abs_Expr_list(abs_expr head, abs_expr_list tail);
-abs_fundec abs_Fundec(abs_pos pos, s_symbol name, abs_field_list params, s_symbol result, abs_expr body);
-abs_fundec_list abs_Fundec_list(abs_fundec head, abs_fundec_list tail);
-abs_dec_list abs_Dec_list(abs_dec head, abs_dec_list tail);
-abs_namety abs_Namety(s_symbol name, abs_type type);
-abs_namety_list abs_Namety_list(abs_namety head, abs_namety_list tail);
-abs_efield abs_Efield(s_symbol name, abs_expr expr);
-abs_efield_list abs_efield_list(abs_efield head, abs_efield_list tail);
+ABS_var ABS_simple_var(ABS_pos pos, S_symbol sym);
+ABS_var ABS_field_var(ABS_pos pos, ABS_var var, S_symbol sym);
+ABS_var ABS_subscript_var(ABS_pos pos, ABS_var var, ABS_expr expr);
+ABS_expr ABS_var_expr(ABS_pos pos, ABS_var var);
+ABS_expr ABS_nil_expr(ABS_pos pos);
+ABS_expr ABS_int_expr(ABS_pos pos, int i);
+ABS_expr ABS_string_expr(ABS_pos pos, string str);
+ABS_expr ABS_call_expr(ABS_pos pos, S_symbol func, ABS_expr_list args);
+ABS_expr ABS_op_expr(ABS_pos pos, ABS_expr left, ABS_expr right);
+ABS_expr ABS_record_expr(ABS_pos pos, S_symbol type, ABS_efield_list fields);
+ABS_expr ABS_seq_expr(ABS_pos pos, ABS_expr_list seq);
+ABS_expr ABS_assign_expr(ABS_pos pos, ABS_var var, ABS_expr expr);
+ABS_expr ABS_if_expr(ABS_pos pos, ABS_expr test, ABS_expr then, ABS_expr elsee);
+ABS_expr ABS_while_expr(ABS_pos pos, ABS_expr test, ABS_expr body);
+ABS_expr ABS_for_expr(ABS_pos pos, S_symbol var, ABS_expr lo, ABS_expr hi, ABS_expr body);
+ABS_expr ABS_break_expr(ABS_pos pos);
+ABS_expr ABS_let_expr(ABS_pos pos, ABS_dec_list decs, ABS_expr body);
+ABS_expr ABS_array_expr(ABS_pos pos, S_symbol type, ABS_expr size, ABS_expr init);
+ABS_dec ABS_function_dec(ABS_pos pos, ABS_fundec_list function);
+ABS_dec ABS_var_dec(ABS_pos pos, S_symbol var, S_symbol type, ABS_expr init);
+ABS_dec ABS_type_dec(ABS_pos pos, ABS_namety_list type);
+ABS_type ABS_name_type(ABS_pos pos, S_symbol name);
+ABS_type ABS_record_type(ABS_pos pos, ABS_field_list record);
+ABS_type ABS_array_type(ABS_pos pos, S_symbol array);
+ABS_field ABS_Field(ABS_pos pos, S_symbol name, S_symbol type);
+ABS_field_list ABS_Field_list(ABS_field head, ABS_field_list tail);
+ABS_expr_list ABS_Expr_list(ABS_expr head, ABS_expr_list tail);
+ABS_fundec ABS_Fundec(ABS_pos pos, S_symbol name, ABS_field_list params, S_symbol result, ABS_expr body);
+ABS_fundec_list ABS_Fundec_list(ABS_fundec head, ABS_fundec_list tail);
+ABS_dec_list ABS_Dec_list(ABS_dec head, ABS_dec_list tail);
+ABS_namety ABS_Namety(S_symbol name, ABS_type type);
+ABS_namety_list ABS_Namety_list(ABS_namety head, ABS_namety_list tail);
+ABS_efield ABS_Efield(S_symbol name, ABS_expr expr);
+ABS_efield_list ABS_efield_list(ABS_efield head, ABS_efield_list tail);

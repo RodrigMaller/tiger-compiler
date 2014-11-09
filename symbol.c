@@ -4,21 +4,21 @@
 
 #include "symbol.h"
 
-struct s_symbol_
+struct S_symbol_
 {
     string name;
-    s_symbol next;
+    S_symbol next;
 }
 
-static s_symbol mk_symbol(string name, s_symbol next)
+static S_symbol mk_symbol(string name, S_symbol next)
 {
-    s_symbol sym = checked_malloc(sizeof(*s));
+    S_symbol sym = checked_malloc(sizeof(*s));
     sym->name = name;
     sym->next = next;
     return sym;
 }
 
-static s_symbol hashtable[SIZE];
+static S_symbol hashtable[SIZE];
 
 static unsigned int hash(string str)
 {
@@ -30,10 +30,10 @@ static unsigned int hash(string str)
     return h;
 }
 
-s_symbol s_Symbol(string name)
+S_symbol S_Symbol(string name)
 {
     int index = hash(name) % SIZE;
-    s_symbol syms = hashtable[index], sym;
+    S_symbol syms = hashtable[index], sym;
     
     for(sym = syms; sym; sym = sym->next)
         if(strcmp((string) sym->name, name))
@@ -43,43 +43,43 @@ s_symbol s_Symbol(string name)
     return sym;
 }
 
-string s_name(s_symbol sym)
+string S_name(S_symbol sym)
 {
     return (string) sym->name;
 }
 
-s_table s_empty(void)
+S_table S_empty(void)
 {
-    return tab_empty();
+    return TAB_empty();
 }
 
-void s_enter(s_table tab, s_symbol sym, void *value)
+void S_enter(S_table tab, S_symbol sym, void *value)
 {
-    tab_enter(tab, sym, value);
+    TAB_enter(tab, sym, value);
 }
 
-void *s_lookup(s_table tab, s_symbol sym)
+void *S_lookup(S_table tab, S_symbol sym)
 {
-    return tab_lookup(tab, sym);
+    return TAB_lookup(tab, sym);
 }
 
-static struct s_symbol_ _mark_sym = {"<mark>", 0};
+static struct S_symbol_ _mark_sym = {"<mark>", 0};
 
-void s_begin_scope(s_table tab)
+void S_begin_scope(S_table tab)
 {
-    s_enter(tab, &_mark_sym, NULL);
+    S_enter(tab, &_mark_sym, NULL);
 }
 
-void s_end_scope(s_table tab)
+void S_end_scope(S_table tab)
 {
-    s_symbol sym;
+    S_symbol sym;
     
     do
-        sym = tab_pop(tab);
+        sym = TAB_pop(tab);
     while (sym != _mark_sym);
 }
 
-void s_dump(s_table tab, void (*show)(s_symbol sym, void *binding))
+void S_dump(S_table tab, void (*show)(S_symbol sym, void *binding))
 {
-    tab_dump(tab, (void (*)(void *, void *)) show);
+    TAB_dump(tab, (void (*)(void *, void *)) show);
 }
