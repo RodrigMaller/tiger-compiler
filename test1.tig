@@ -1,1 +1,11 @@
-let var a := 2 in 5 end
+let
+	type myint = int
+	type myarr = array of int
+
+	function papa(n: int): int = a + b
+
+    var a := 2
+    var b := 3
+in
+    papa(10)
+end

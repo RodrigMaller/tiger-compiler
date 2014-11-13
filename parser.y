@@ -118,16 +118,16 @@ expr:
 //| TK_BREAK                                          { $$ = ABS_break_expr($1); }
   TK_INT                                            { $$ = ABS_int_expr(EM_tok_pos, $1); }
 //| TK_STRING                                         { $$ = ABS_string_expr(EM_tok_pos, $1); }
-//| lval                                              { $$ = ABS_var_expr($1->pos, $1); }
-//| TK_LPAREN expr TK_RPAREN                          { $$ = ABS_seq_expr($1, NULL); }
-//| TK_LPAREN expr TK_RPAREN                          { $$ = $2; }
-//| id TK_LPAREN TK_RPAREN                            { $$ = ABS_call_expr($2, $1, NULL); }
-//| id TK_LPAREN expr arg_seq TK_RPAREN               { $$ = ABS_call_expr($2, $1, list($3, $4)); }
+| lval                                              { $$ = ABS_var_expr($1->pos, $1); }
+| TK_LPAREN TK_RPAREN                               { $$ = ABS_seq_expr($1, NULL); }
+| TK_LPAREN expr TK_RPAREN                          { $$ = $2; }
+| id TK_LPAREN TK_RPAREN                            { $$ = ABS_call_expr($2, $1, NULL); }
+| id TK_LPAREN expr arg_seq TK_RPAREN               { $$ = ABS_call_expr($2, $1, list($3, $4)); }
 //| TK_MINUS expr %prec TK_UMINUS                     { $$ = ABS_op_expr($1, ABS_int_expr($1, 0), ABS_MINUS, $2); }
-//| expr TK_PLUS expr                                 { $$ = ABS_op_expr($2, $1, ABS_PLUS, $3); }
-//| expr TK_MINUS expr                                { $$ = ABS_op_expr($2, $2, ABS_MINUS, $3); }
-//| expr TK_TIMES expr                                { $$ = ABS_op_expr($2, $1, ABS_TIMES, $3); }
-//| expr TK_DIVIDE expr                               { $$ = ABS_op_expr($2, $1, ABS_DIVIDE, $3); }
+| expr TK_PLUS expr                                 { $$ = ABS_op_expr($2, ABS_PLUS, $1, $3); }
+| expr TK_MINUS expr                                { $$ = ABS_op_expr($2, ABS_MINUS, $1, $3); }
+| expr TK_TIMES expr                                { $$ = ABS_op_expr($2, ABS_TIMES, $1, $3); }
+| expr TK_DIVIDE expr                               { $$ = ABS_op_expr($2, ABS_DIVIDE, $1, $3); }
 //| expr TK_EQ expr                                   { $$ = ABS_op_expr($2, $1, ABS_EQ, $3); }
 //| expr TK_NEQ expr                                  { $$ = ABS_op_expr($2, $1, ABS_NEQ, $3); }
 //| expr TK_LT expr                                   { $$ = ABS_op_expr($2, $1, ABS_LT, $3); }
@@ -153,61 +153,70 @@ decs:
 ;
 
 dec:
-//  types_dec             { $$ = ABS_type_dec(((ABS_type) $1->data)->pos, $1); }
- var_dec
-//| funcs_dec             { $$ = ABS_function_dec(((ABS_fundec) $1->data)->pos, $1); }
+  types_dec             { $$ = ABS_type_dec(((ABS_type) $1->data)->pos, $1); }
+| var_dec
+| funcs_dec             { $$ = ABS_function_dec(((ABS_fundec) $1->data)->pos, $1); }
 ;
-//
-//types_dec:
-//  TK_TYPE id TK_EQ type             { $$ = list(ABS_Namety($2, $4), NULL); }
-//| types_dec TK_TYPE id TK_EQ type   { LIST_ACTION($$, $1, ABS_Namety($3, $5)); }
-//
-//type:
-//  id                                { $$ = ABS_name_type(EM_tok_pos, $1); }
-//| TK_LBRACE fields TK_RBRACE        { $$ = ABS_record_type($1, $2); }
-//| TK_ARRAY TK_OF id                 { $$ = ABS_array_type($1, $3); }
-//
-//fields:
-//  /* empty */                       { $$ = NULL; }
-//| id TK_COLON id field_seq          { $$ = list(ABS_Field($1, $3), $4); }
-//
+
+types_dec:
+  TK_TYPE id TK_EQ type             { $$ = list(ABS_Namety($2, $4), NULL); }
+| types_dec TK_TYPE id TK_EQ type   { LIST_ACTION($$, $1, ABS_Namety($3, $5)); }
+;
+
+type:
+  id                                { $$ = ABS_name_type(EM_tok_pos, $1); }
+| TK_LBRACE fields TK_RBRACE        { $$ = ABS_record_type($1, $2); }
+| TK_ARRAY TK_OF id                 { $$ = ABS_array_type($1, $3); }
+;
+
+fields:
+  /* empty */                       { $$ = NULL; }
+| id TK_COLON id field_seq          { $$ = list(ABS_Field($1, $3), $4); }
+;
+
 var_dec:
   TK_VAR id TK_ASSIGN expr              { $$ = ABS_var_dec($1, $2, NULL, $4); }
 //| TK_VAR id TK_COLON id TK_ASSIGN expr  { $$ = ABS_var_dec($1, $2, $4, $6); }
 ;
 
-//funcs_dec:
-//  func_dec              { $$ = list($1, NULL); }
-//| funcs_dec func_dec    { LIST_ACTION($$, $1, $2); }
-//
-//func_dec:
-//  TK_FUNCTION id TK_LPAREN fields TK_RPAREN TK_EQ expr              { $$ = ABS_Fundec($1, $2, $4, NULL, $7); }
-//| TK_FUNCTION id TK_LPAREN fields TK_RPAREN TK_COLON id TK_EQ expr  { $$ = ABS_Fundec($1, $2, $4, $7, $9); }
-//
+funcs_dec:
+  func_dec              { $$ = list($1, NULL); }
+| funcs_dec func_dec    { LIST_ACTION($$, $1, $2); }
+;
+
+func_dec:
+  TK_FUNCTION id TK_LPAREN fields TK_RPAREN TK_EQ expr              { $$ = ABS_Fundec($1, $2, $4, NULL, $7); }
+| TK_FUNCTION id TK_LPAREN fields TK_RPAREN TK_COLON id TK_EQ expr  { $$ = ABS_Fundec($1, $2, $4, $7, $9); }
+;
+
 //expr_seq:
 //  TK_SEMICOLON expr             { $$ = list($2, NULL); }
 //| expr_seq TK_SEMICOLON expr    { $$ = LIST_ACTION($$, $1, $2); }
 //
-//arg_seq:
-//  /* empty */                   { $$ = NULL; }
-//| arg_seq TK_COMMA expr         { LIST_ACTION($$, $1, $3); }
-//
+arg_seq:
+  /* empty */                   { $$ = NULL; }
+| arg_seq TK_COMMA expr         { LIST_ACTION($$, $1, $3); }
+;
+
 //efield_seq:
 //  /* empty */                           { $$ = NULL; }
 //| efield_seq TK_COMMA id TK_EQ expr     { LIST_ACTION($$, $1, ABS_Efield($4, $3, $5)); }
 //
-//field_seq:
-//  /* empty */                           { $$ = NULL; }
-//| field_seq TK_COMMA id TK_COLON id     { LIST_ACTION($$, $1, ABS_Field($3, $5)); }
-//
-//lval:
-//  id lval_        { LVALUE_ACTION($$, $2, ABS_simple_var(EM_tok_pos, $1)); }
-//
-//lval_:
-//  /* empty */                           { $$ = NULL; }
-//| TK_DOT id lval_                       { LVALUE_ACTION($$, $3, ABS_field_var($1, NULL, $2)); }
-//| TK_LBRACK expr TK_RBRACK lval_        { LVALUE_ACTION($$, $4, ABS_subscript_var($1, NULL, $2)); }
-//
+field_seq:
+  /* empty */                           { $$ = NULL; }
+| field_seq TK_COMMA id TK_COLON id     { LIST_ACTION($$, $1, ABS_Field($3, $5)); }
+;
+
+lval:
+  id lval_        { LVALUE_ACTION($$, $2, ABS_simple_var(EM_tok_pos, $1)); }
+;
+
+lval_:
+  /* empty */                           { $$ = NULL; }
+| TK_DOT id lval_                       { LVALUE_ACTION($$, $3, ABS_field_var($1, NULL, $2)); }
+| TK_LBRACK expr TK_RBRACK lval_        { LVALUE_ACTION($$, $4, ABS_subscript_var($1, NULL, $2)); }
+;
+
 id:
   TK_ID     { $$ = S_Symbol($1); }
 ;
@@ -228,7 +237,7 @@ static void print_tk_value(FILE *fp, int type, YYSTYPE value)
             fprintf(fp, "%s", value.sval);
             break;
         case TK_INT:
-            fprintf(fp, "%s", value.ival);
+            fprintf(fp, "%d", value.ival);
             break;
     }
 }
