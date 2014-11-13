@@ -1,6 +1,6 @@
 #include "absyn.h"
 
-ABS_var ABS_simple_var(ABS_pos pos, S_symbol sym)
+ABS_var::ABS_simple_var(ABS_pos pos, S_symbol sym)
 {
 	ABS_var p = checked_malloc(sizeof(*p));
 	p->kind = ABS_SIMPLE_VAR;
@@ -9,7 +9,7 @@ ABS_var ABS_simple_var(ABS_pos pos, S_symbol sym)
 	return p;
 }
 
-ABS_var ABS_field_var(ABS_pos pos, ABS_var var, S_symbol sym)
+ABS_var::ABS_field_var(ABS_pos pos, ABS_var var, S_symbol sym)
 {
 	ABS_var p = checked_malloc(sizeof(*p));
 	p->kind = ABS_FIELD_VAR;
@@ -19,7 +19,7 @@ ABS_var ABS_field_var(ABS_pos pos, ABS_var var, S_symbol sym)
 	return p;
 }
 
-ABS_var ABS_subscript_var(ABS_pos pos, ABS_var var, ABS_expr expr)
+ABS_var::ABS_subscript_var(ABS_pos pos, ABS_var var, ABS_expr expr)
 {
 	ABS_var p = checked_malloc(sizeof(*p));
 	p->kind = ABS_SUBSCRIPT_VAR;
@@ -29,7 +29,7 @@ ABS_var ABS_subscript_var(ABS_pos pos, ABS_var var, ABS_expr expr)
 	return p;
 }
 
-ABS_expr ABS_var_expr(ABS_pos pos, ABS_var var)
+ABS_exp::ABS_var_expr(ABS_pos pos, ABS_var var)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_VAR_EXPR;
@@ -38,7 +38,7 @@ ABS_expr ABS_var_expr(ABS_pos pos, ABS_var var)
 	return p;
 }
 
-ABS_expr ABS_nil_expr(ABS_pos pos)
+ABS_expr::ABS_nil_expr(ABS_pos pos)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_NIL_EXPR;
@@ -46,7 +46,7 @@ ABS_expr ABS_nil_expr(ABS_pos pos)
 	return p;
 }
 
-ABS_expr ABS_int_expr(ABS_pos pos, int i)
+ABS_expr::ABS_int_expr(ABS_pos pos, int i)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_INT_EXPR;
@@ -55,7 +55,7 @@ ABS_expr ABS_int_expr(ABS_pos pos, int i)
 	return p;
 }
 
-ABS_expr ABS_string_expr(ABS_pos pos, string str)
+ABS_expr::ABS_string_expr(ABS_pos pos, string str)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_STRING_EXPR;
@@ -64,7 +64,7 @@ ABS_expr ABS_string_expr(ABS_pos pos, string str)
 	return p;
 }
 
-ABS_expr ABS_call_expr(ABS_pos pos, S_symbol func, ABS_expr_list args)
+ABS_expr::ABS_call_expr(ABS_pos pos, S_symbol func, ABS_expr_list args)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_CALL_EXPR;
@@ -74,7 +74,7 @@ ABS_expr ABS_call_expr(ABS_pos pos, S_symbol func, ABS_expr_list args)
 	return p;
 }
 
-ABS_expr ABS_op_expr(ABS_pos pos, ABS_oper oper, ABS_expr left, ABS_expr right)
+ABS_expr::ABS_op_expr(ABS_pos pos, ABS_oper oper, ABS_expr left, ABS_expr right)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_OP_EXPR;
@@ -85,7 +85,7 @@ ABS_expr ABS_op_expr(ABS_pos pos, ABS_oper oper, ABS_expr left, ABS_expr right)
 	return p;
 }
 
-ABS_expr ABS_record_expr(ABS_pos pos, S_symbol type, ABS_efield_list fields)
+ABS_expr::ABS_record_expr(ABS_pos pos, S_symbol type, ABS_efield_list fields)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_RECORD_EXPR;
@@ -95,7 +95,7 @@ ABS_expr ABS_record_expr(ABS_pos pos, S_symbol type, ABS_efield_list fields)
 	return p;
 }
 
-ABS_expr ABS_seq_expr(ABS_pos pos, ABS_expr_list seq)
+ABS_expr::ABS_seq_expr(ABS_pos pos, ABS_expr_list seq)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_SEQ_EXPR;
@@ -104,7 +104,7 @@ ABS_expr ABS_seq_expr(ABS_pos pos, ABS_expr_list seq)
 	return p;
 }
 
-ABS_expr ABS_assign_expr(ABS_pos pos, ABS_var var, ABS_expr expr)
+ABS_expr::ABS_assign_expr(ABS_pos pos, ABS_var var, ABS_expr expr)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_ASSIGN_EXPR;
@@ -114,7 +114,7 @@ ABS_expr ABS_assign_expr(ABS_pos pos, ABS_var var, ABS_expr expr)
 	return p;
 }
 
-ABS_expr ABS_if_expr(ABS_pos pos, ABS_expr test, ABS_expr then, ABS_expr elsee)
+ABS_expr::ABS_if_expr(ABS_pos pos, ABS_expr test, ABS_expr then, ABS_expr elsee)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_IF_EXPR;
@@ -125,7 +125,7 @@ ABS_expr ABS_if_expr(ABS_pos pos, ABS_expr test, ABS_expr then, ABS_expr elsee)
 	return p;
 }
 
-ABS_expr ABS_while_expr(ABS_pos pos, ABS_expr test, ABS_expr body)
+ABS_expr::ABS_while_expr(ABS_pos pos, ABS_expr test, ABS_expr body)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_WHILE_EXPR;
@@ -135,7 +135,7 @@ ABS_expr ABS_while_expr(ABS_pos pos, ABS_expr test, ABS_expr body)
 	return p;
 }
 
-ABS_expr ABS_for_expr(ABS_pos pos, S_symbol var, ABS_expr lo, ABS_expr hi, ABS_expr body)
+ABS_expr::ABS_for_expr(ABS_pos pos, S_symbol var, ABS_expr lo, ABS_expr hi, ABS_expr body)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_FOR_EXPR;
@@ -147,7 +147,7 @@ ABS_expr ABS_for_expr(ABS_pos pos, S_symbol var, ABS_expr lo, ABS_expr hi, ABS_e
 	return p;
 }
 
-ABS_expr ABS_break_expr(ABS_pos pos)
+ABS_expr::ABS_break_expr(ABS_pos pos)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_BREAK_EXPR;
@@ -155,7 +155,7 @@ ABS_expr ABS_break_expr(ABS_pos pos)
 	return p;
 }
 
-ABS_expr ABS_let_expr(ABS_pos pos, ABS_dec_list decs, ABS_expr body)
+ABS_expr::ABS_let_expr(ABS_pos pos, ABS_dec_list decs, ABS_expr body)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_LET_EXPR;
@@ -165,7 +165,7 @@ ABS_expr ABS_let_expr(ABS_pos pos, ABS_dec_list decs, ABS_expr body)
 	return p;
 }
 
-ABS_expr ABS_array_expr(ABS_pos pos, S_symbol type, ABS_expr size, ABS_expr init)
+ABS_expr::ABS_array_expr(ABS_pos pos, S_symbol type, ABS_expr size, ABS_expr init)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_ARRAY_EXPR;
@@ -176,7 +176,7 @@ ABS_expr ABS_array_expr(ABS_pos pos, S_symbol type, ABS_expr size, ABS_expr init
 	return p;
 }
 
-ABS_dec ABS_function_dec(ABS_pos pos, ABS_fundec_list function)
+ABS_dec::ABS_function_dec(ABS_pos pos, ABS_fundec_list function)
 {
 	ABS_dec p = checked_malloc(sizeof(*p));
 	p->kind = ABS_FUNCTION_DEC;
@@ -185,7 +185,7 @@ ABS_dec ABS_function_dec(ABS_pos pos, ABS_fundec_list function)
 	return p;
 }
 
-ABS_dec ABS_var_dec(ABS_pos pos, S_symbol var, S_symbol type, ABS_expr init)
+ABS_dec::ABS_var_dec(ABS_pos pos, S_symbol var, S_symbol type, ABS_expr init)
 {
 	ABS_dec p = checked_malloc(sizeof(*p));
 	p->kind = ABS_VAR_DEC;
@@ -197,7 +197,7 @@ ABS_dec ABS_var_dec(ABS_pos pos, S_symbol var, S_symbol type, ABS_expr init)
 	return p;
 }
 
-ABS_dec ABS_type_dec(ABS_pos pos, ABS_namety_list type)
+ABS_dec::ABS_type_dec(ABS_pos pos, ABS_namety_list type)
 {
 	ABS_dec p = checked_malloc(sizeof(*p));
 	p->kind = ABS_TYPE_DEC;
@@ -206,7 +206,7 @@ ABS_dec ABS_type_dec(ABS_pos pos, ABS_namety_list type)
 	return p;
 }
 
-ABS_type ABS_name_type(ABS_pos pos, S_symbol name)
+ABS_type::ABS_name_type(ABS_pos pos, S_symbol name)
 {
 	ABS_type p = checked_malloc(sizeof(*p));
 	p->kind = ABS_NAME_TYPE;
@@ -215,7 +215,7 @@ ABS_type ABS_name_type(ABS_pos pos, S_symbol name)
 	return p;
 }
 
-ABS_type ABS_record_type(ABS_pos pos, ABS_field_list record)
+ABS_type::ABS_record_type(ABS_pos pos, ABS_field_list record)
 {
 	ABS_type p = checked_malloc(sizeof(*p));
 	p->kind = ABS_RECORD_TYPE;
@@ -224,7 +224,7 @@ ABS_type ABS_record_type(ABS_pos pos, ABS_field_list record)
 	return p;
 }
 
-ABS_type ABS_array_type(ABS_pos pos, S_symbol array)
+ABS_type::ABS_array_type(ABS_pos pos, S_symbol array)
 {
 	ABS_type p = checked_malloc(sizeof(*p));
 	p->kind = ABS_ARRAY_TYPE;
@@ -233,7 +233,7 @@ ABS_type ABS_array_type(ABS_pos pos, S_symbol array)
 	return p;
 }
 
-ABS_field ABS_Field(S_symbol name, S_symbol type)
+ABS_field::ABS_Field(S_symbol name, S_symbol type)
 {
 	ABS_field p = checked_malloc(sizeof(*p));
 	p->name = name;
@@ -242,7 +242,7 @@ ABS_field ABS_Field(S_symbol name, S_symbol type)
 	return p;
 }
 
-ABS_field_list ABS_Field_list(ABS_field head, ABS_field_list tail)
+ABS_field_list::ABS_Field_list(ABS_field head, ABS_field_list tail)
 {
 	ABS_field_list p = checked_malloc(sizeof(*p));
 	p->head = head;
@@ -250,7 +250,7 @@ ABS_field_list ABS_Field_list(ABS_field head, ABS_field_list tail)
 	return p;
 }
 
-ABS_expr_list ABS_Expr_list(ABS_expr head, ABS_expr_list tail)
+ABS_expr_list::ABS_Expr_list(ABS_expr head, ABS_expr_list tail)
 {
 	ABS_expr_list p = checked_malloc(sizeof(*p));
 	p->head = head;
@@ -258,7 +258,7 @@ ABS_expr_list ABS_Expr_list(ABS_expr head, ABS_expr_list tail)
 	return p;
 }
 
-ABS_fundec ABS_Fundec(ABS_pos pos, S_symbol name, ABS_field_list params, S_symbol result, ABS_expr body)
+ABS_fundec::ABS_Fundec(ABS_pos pos, S_symbol name, ABS_field_list params, S_symbol result, ABS_expr body)
 {
 	ABS_fundec p = checked_malloc(sizeof(*p));
 	p->pos = pos;
@@ -269,7 +269,7 @@ ABS_fundec ABS_Fundec(ABS_pos pos, S_symbol name, ABS_field_list params, S_symbo
 	return p;
 }
 
-ABS_fundec_list ABS_Fundec_list(ABS_fundec head, ABS_fundec_list tail)
+ABS_fundec_list::ABS_Fundec_list(ABS_fundec head, ABS_fundec_list tail)
 {
 	ABS_fundec_list p = checked_malloc(sizeof(*p));
 	p->head = head;
@@ -277,7 +277,7 @@ ABS_fundec_list ABS_Fundec_list(ABS_fundec head, ABS_fundec_list tail)
 	return p;
 }
 
-ABS_dec_list ABS_Dec_list(ABS_dec head, ABS_dec_list tail)
+ABS_dec_list::ABS_Dec_list(ABS_dec head, ABS_dec_list tail)
 {
 	ABS_dec_list p = checked_malloc(sizeof(*p));
 	p->head = head;
@@ -285,7 +285,7 @@ ABS_dec_list ABS_Dec_list(ABS_dec head, ABS_dec_list tail)
 	return p;
 }
 
-ABS_namety ABS_Namety(S_symbol name, ABS_type type)
+ABS_namety::ABS_Namety(S_symbol name, ABS_type type)
 {
 	ABS_namety p = checked_malloc(sizeof(*p));
 	p->name = name;
@@ -293,7 +293,7 @@ ABS_namety ABS_Namety(S_symbol name, ABS_type type)
 	return p;
 }
 
-ABS_namety_list ABS_Namety_list(ABS_namety head, ABS_namety_list tail)
+ABS_namety_list::ABS_Namety_list(ABS_namety head, ABS_namety_list tail)
 {
 	ABS_namety_list p = checked_malloc(sizeof(*p));
 	p->head = head;
@@ -301,7 +301,7 @@ ABS_namety_list ABS_Namety_list(ABS_namety head, ABS_namety_list tail)
 	return p;
 }
 
-ABS_efield ABS_Efield(ABS_pos pos, S_symbol name, ABS_expr expr)
+ABS_efield::ABS_Efield(ABS_pos pos, S_symbol name, ABS_expr expr)
 {
 	ABS_efield p = checked_malloc(sizeof(*p));
 	p->pos = pos;
@@ -310,7 +310,7 @@ ABS_efield ABS_Efield(ABS_pos pos, S_symbol name, ABS_expr expr)
 	return p;
 }
 
-ABS_efield_list ABS_Efield_list(ABS_efield head, ABS_efield_list tail)
+ABS_efield_list::ABS_Efield_list(ABS_efield head, ABS_efield_list tail)
 {
 	ABS_efield_list p = checked_malloc(sizeof(*p));
 	p->head = head;
