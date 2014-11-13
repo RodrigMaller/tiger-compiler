@@ -4,9 +4,8 @@
 /* need this for the call to atof() below */
 #include <string.h>
 
-#include "utils.h"
-#include "tokens.h"
 #include "errormsg.h"
+#include "parser.tab.h"
 
 int char_pos = 1;
 
@@ -28,6 +27,9 @@ DIGIT   [0-9]
 ID      [a-zA-Z][a-zA-Z0-9]*
      
 %%
+
+[ \t\f\v\r]             { adj(); }
+\n                      { adj(); EM_newline(); }
      
 ","             { adj(); return TK_COMMA; }
 ":"             { adj(); return TK_COLON;}
@@ -72,4 +74,4 @@ var             { adj(); return TK_VAR; }
 type            { adj(); return TK_TYPE; }
 
 {DIGIT}+        { adj(); yylval.ival = atoi(yytext); return TK_INT; }
-{ID}            { adj(); yylval.sval = string(yytext); return TK_ID; }
+{ID}            { adj(); yylval.sval = String(yytext); return TK_ID; }

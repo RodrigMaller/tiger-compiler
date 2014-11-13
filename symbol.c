@@ -8,11 +8,11 @@ struct S_symbol_
 {
     string name;
     S_symbol next;
-}
+};
 
 static S_symbol mk_symbol(string name, S_symbol next)
 {
-    S_symbol sym = checked_malloc(sizeof(*s));
+    S_symbol sym = checked_malloc(sizeof(*sym));
     sym->name = name;
     sym->next = next;
     return sym;
@@ -63,7 +63,7 @@ void *S_lookup(S_table tab, S_symbol sym)
     return TAB_lookup(tab, sym);
 }
 
-static struct S_symbol_ _mark_sym = {"<mark>", 0};
+static S_symbol _mark_sym = {"<mark>", 0};
 
 void S_begin_scope(S_table tab)
 {

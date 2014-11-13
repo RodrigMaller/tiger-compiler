@@ -1,15 +1,13 @@
 #include <assert.h>
 
 #include "prabsyn.h"
-#include "symbol.h"
-#include "utils.h"
 
 static void pr_var(FILE *fp, ABS_var v, int d);
 static void pr_dec(FILE *fp, ABS_dec v, int d);
 static void pr_type(FILE *fp, ABS_type v, int d);
 static void pr_field(FILE *fp, ABS_field v, int d);
-static void pr_fieldList(FILE *fp, ABS_fieldList v, int d);
-static void pr_exprList(FILE *fp, ABS_exprList v, int d);
+static void pr_field_list(FILE *fp, ABS_field_list v, int d);
+static void pr_expr_list(FILE *fp, ABS_expr_list v, int d);
 static void pr_fundec(FILE *fp, ABS_fundec v, int d);
 static void pr_fundec_list(FILE *fp, ABS_fundec_list v, int d);
 static void pr_dec_list(FILE *fp, ABS_dec_list v, int d);
@@ -85,7 +83,7 @@ void pr_expr(FILE *fp, ABS_expr v, int d) {
             fprintf(fp, "call_expr(%s\n", S_name(v->u.call.func));
             indent(fp, d+1);
             pr_expr_list(fp, v->u.call.args, d+2);
-            indent(fp, d) 
+            indent(fp, d);
             fprintf(fp, ")\n");
             break;
         case ABS_OP_EXPR:
@@ -98,9 +96,9 @@ void pr_expr(FILE *fp, ABS_expr v, int d) {
             fprintf(fp, ")\n");
             break;
         case ABS_RECORD_EXPR:
-            fprintf(fp, "record_expr(%s\n", S_name(v->u.record.type));
+            fprintf(fp, "record_expr(%s\n", S_name(v->u.recordd.type));
             indent(fp, d+1); 
-            pr_efield_list(fp, v->u.record.fields, d+2);
+            pr_efield_list(fp, v->u.recordd.fields, d+2);
             indent(fp, d);
             fprintf(fp, ")\n");
             break;
@@ -184,8 +182,8 @@ static void pr_dec(FILE *fp, ABS_dec v, int d) {
                 fprintf(fp, "%s\n", S_name(v->u.var.type)); 
             }
             pr_expr(fp, v->u.var.init, d+1);
-            indent(fp, d+1);
-            fprintf(fp, "%s\n", v->u.var.escape ? "TRUE" : "FALSE")
+            indent(fp, d+1); 
+            fprintf(fp, "%s\n", v->u.var.escape ? "TRUE" : "FALSE");
             indent(fp, d); 
             fprintf(fp, ")\n");
             break;
@@ -321,13 +319,13 @@ static void pr_efield(FILE *fp, ABS_efield v, int d) {
     if (v) 
     {
         fprintf(fp, "efield(%s\n", S_name(v->name));
-        pr_expr(fp, v->exp, d+1); 
+        pr_expr(fp, v->expr, d+1); 
         fprintf(fp, ")\n");
     }
     else fprintf(fp, "efield()\n");
 }
 
-static void pr_efield_list(FILE *fp, A_efield_list v, int d) {
+static void pr_efield_list(FILE *fp, ABS_efield_list v, int d) {
     indent(fp, d);
     if (v) 
     {

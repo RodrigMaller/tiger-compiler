@@ -18,18 +18,26 @@ string String(char *str)
     return p;
 }
 
-list bool_list(bool b, list tail)
+L_list bool_list(bool b, L_list tail)
 {
-    list l = checked_malloc(sizeof(*l));
+    L_list l = checked_malloc(sizeof(*l));
     l->b = b;
     l->tail = tail;
     return l;
 }
 
-list int_list(int i, list tail)
+L_list int_list(int i, L_list tail)
 {
-    list l = checked_malloc(sizeof *l);
+    L_list l = checked_malloc(sizeof *l);
     l->i = i;
     l->tail = tail;
     return l;
+}
+
+L_list list(void *data, L_list tail)
+{
+    L_list p = checked_malloc(sizeof(*p));
+    p->data = data;
+    p->tail = tail;
+    return p;
 }

@@ -17,7 +17,7 @@ TEMP_label TEMP_new_label(void)
 {
 	char buf[100];
 	sprintf(buf, "L%d", labels++);
-	return TEMP_named_label(string s);
+	return TEMP_named_label(String(buf));
 }
 
 TEMP_label TEMP_named_label(string s)
@@ -53,7 +53,7 @@ TEMP_map new_map(TAB_table tab, TEMP_map under)
 	TEMP_map map = checked_malloc(sizeof(*map));
 	map->tab = tab;
 	map->under = under;
-	return m;
+	return map;
 }
 
 TEMP_map TEMP_empty(void)
@@ -113,6 +113,6 @@ void TEMP_dump_map(FILE *fp, TEMP_map map)
 	if (map->under)
 	{
 		fprintf(fp, "---------\n");
-		TEMP_dump_map(fp, m->under);
+		TEMP_dump_map(fp, map->under);
 	}
 }

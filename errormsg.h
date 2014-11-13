@@ -1,3 +1,5 @@
+#include "absyn.h"
+
 extern bool EM_any_errors;
 
 void EM_newline(void);

@@ -1,7 +1,6 @@
 #include <assert.h>
 #include <stdio.h>
 
-#include "utils.h"
 #include "types.h"
 
 static struct TY_type_ ty_nil = { TY_NIL };
@@ -87,7 +86,7 @@ void TY_print(TY_type t)
 	if (t == NULL) printf("null");
 	else
 	{
-		printf("%s", str_ty[t->kind]);
+		printf("%s", ty_str[t->kind]);
 		if (t->kind == TY_NAME)
 		{
 			printf(", %s", S_name(t->u.name.sym));

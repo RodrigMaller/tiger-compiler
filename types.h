@@ -1,9 +1,9 @@
 #include "symbol.h"
 
-typedef struct TY_type_ *TY_type_;
+typedef struct TY_type_ *TY_type;
 typedef struct TY_type_list_ *TY_type_list;
 typedef struct TY_field_ *TY_field;
-typedef struct TY_field_ist_ *TY_field_list;
+typedef struct TY_field_list_ *TY_field_list;
 
 struct TY_type_
 {
@@ -12,7 +12,7 @@ struct TY_type_
 	{
 		TY_field_list record;
 		TY_type array;
-		struct { S_symbol sym; TY_ty type; } name;
+		struct { S_symbol sym; TY_type type; } name;
 	} u;
 };
 

@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <assert.h>
 
-#include "util.h"
-#include "TAB_table.h"
+#include "utils.h"
+#include "table.h"
 
 typedef struct binder_ *binder;
 struct binder_
@@ -15,7 +15,7 @@ struct binder_
 
 struct TAB_table_
 {
-    binder TAB_table[TABSIZE];
+    binder table[TABSIZE];
     void *top;
 };
 
@@ -31,7 +31,7 @@ static binder Binder(void *key, void *value, binder next, void *prevtop)
 
 TAB_table TAB_empty(void)
 {
-    table t = checked_malloc(sizeof(*t));
+    TAB_table t = checked_malloc(sizeof(*t));
     int i;
     
     t->top = NULL;
@@ -40,13 +40,13 @@ TAB_table TAB_empty(void)
     return t;
 }
 
-void TAB_enter(TAB_table t, void *key, void value)
+void TAB_enter(TAB_table t, void *key, void *value)
 {
     int index;
     
     assert(t && key);
     index = ((unsigned) key) % TABSIZE;
-    t->TAB_table[index] = Binder(key, value, t->TAB_table[index], t->top);
+    t->table[index] = Binder(key, value, t->table[index], t->top);
     t->top = key;
 }
 
@@ -57,7 +57,7 @@ void *TAB_lookup(TAB_table t, void *key)
     binder b;
     assert(t && key);
     index = ((unsigned) key) % TABSIZE;
-    for(b = t->TAB_table[index]; b; b = b->next)
+    for(b = t->table[index]; b; b = b->next)
         if (b->key == key) return b->value;
     return NULL;
 }
@@ -72,9 +72,9 @@ void *TAB_pop(TAB_table t)
     k = t->top;
     assert(k);
     index = ((unsigned) k) % TABSIZE;
-    b = t->TAB_table[index];
+    b = t->table[index];
     assert(b);
-    t->TAB_table[index] = b->next;
+    t->table[index] = b->next;
     t->top = b->prevtop;
     return b->key;
 }
@@ -83,13 +83,13 @@ void TAB_dump(TAB_table t, void (*show)(void *key, void *value))
 {
     void *k = t->top;
     int index = ((unsigned) k) % TABSIZE;
-    binder b = t->TAB_table[index];
+    binder b = t->table[index];
     if (b == NULL) return;
-    t->TAB_table[index] = b->next;
+    t->table[index] = b->next;
     t->top = b->prevtop;
     show(b->key, b->value);
     TAB_dump(t, show);
-    assert(t->top == b->prevtop && t->TAB_table[index] == b->next);
+    assert(t->top == b->prevtop && t->table[index] == b->next);
     t->top = k;
-    t->TAB_table[index] = b;
+    t->table[index] = b;
 }

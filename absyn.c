@@ -1,4 +1,4 @@
-#include "ABSyn.h"
+#include "absyn.h"
 
 ABS_var ABS_simple_var(ABS_pos pos, S_symbol sym)
 {
@@ -55,12 +55,12 @@ ABS_expr ABS_int_expr(ABS_pos pos, int i)
 	return p;
 }
 
-ABS_expr ABS_string_expr(ABS_pos pos, strins str)
+ABS_expr ABS_string_expr(ABS_pos pos, string str)
 {
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_STRING_EXPR;
 	p->pos = pos;
-	p->u.stringg = string;
+	p->u.stringg = str;
 	return p;
 }
 
@@ -90,8 +90,8 @@ ABS_expr ABS_record_expr(ABS_pos pos, S_symbol type, ABS_efield_list fields)
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_RECORD_EXPR;
 	p->pos = pos;
-	p->record.type = type;
-	p->record.fields = fields;
+	p->u.recordd.type = type;
+	p->u.recordd.fields = fields;
 	return p;
 }
 
@@ -130,8 +130,8 @@ ABS_expr ABS_while_expr(ABS_pos pos, ABS_expr test, ABS_expr body)
 	ABS_expr p = checked_malloc(sizeof(*p));
 	p->kind = ABS_WHILE_EXPR;
 	p->pos = pos;
-	p->u.while.test = text;
-	p->u.while.body = body;
+	p->u.whilee.test = test;
+	p->u.whilee.body = body;
 	return p;
 }
 
@@ -202,7 +202,7 @@ ABS_dec ABS_type_dec(ABS_pos pos, ABS_namety_list type)
 	ABS_dec p = checked_malloc(sizeof(*p));
 	p->kind = ABS_TYPE_DEC;
 	p->pos = pos;
-	p->type = type;
+	p->u.type = type;
 	return p;
 }
 
@@ -233,10 +233,9 @@ ABS_type ABS_array_type(ABS_pos pos, S_symbol array)
 	return p;
 }
 
-ABS_field ABS_Field(ABS_pos pos, S_symbol name, S_symbol type)
+ABS_field ABS_Field(S_symbol name, S_symbol type)
 {
 	ABS_field p = checked_malloc(sizeof(*p));
-	p->pos = pos;
 	p->name = name;
 	p->type = type;
 	p->escape = TRUE;
@@ -272,7 +271,7 @@ ABS_fundec ABS_Fundec(ABS_pos pos, S_symbol name, ABS_field_list params, S_symbo
 
 ABS_fundec_list ABS_Fundec_list(ABS_fundec head, ABS_fundec_list tail)
 {
-	ABS_fundec_list p = checked_malloc(sizeof(*));
+	ABS_fundec_list p = checked_malloc(sizeof(*p));
 	p->head = head;
 	p->tail = tail;
 	return p;
@@ -302,15 +301,16 @@ ABS_namety_list ABS_Namety_list(ABS_namety head, ABS_namety_list tail)
 	return p;
 }
 
-ABS_efield ABS_Efield(S_symbol name, ABS_expr expr)
+ABS_efield ABS_Efield(ABS_pos pos, S_symbol name, ABS_expr expr)
 {
 	ABS_efield p = checked_malloc(sizeof(*p));
+	p->pos = pos;
 	p->name = name;
 	p->expr = expr;
 	return p;
 }
 
-ABS_efield_list ABS_efield_list(ABS_efield head, ABS_efield_list tail)
+ABS_efield_list ABS_Efield_list(ABS_efield head, ABS_efield_list tail)
 {
 	ABS_efield_list p = checked_malloc(sizeof(*p));
 	p->head = head;

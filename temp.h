@@ -1,7 +1,6 @@
 #include <stdio.h>
 
 #include "symbol.h"
-#include "utils.h"
 
 typedef struct TEMP_temp_ *TEMP_temp;
 TEMP_temp TEMP_new_temp(void);
@@ -16,7 +15,7 @@ TEMP_label TEMP_named_label(string s);
 string TEMP_label_string(TEMP_label s);
 
 typedef struct TEMP_label_list_ *TEMP_label_list;
-struct TEMP_label_list_ { TEMP_label head; TEMP_label_list tail };
+struct TEMP_label_list_ { TEMP_label head; TEMP_label_list tail; };
 TEMP_label_list TEMP_Label_list(TEMP_label head, TEMP_label_list tail);
 
 typedef struct TEMP_map_ *TEMP_map;

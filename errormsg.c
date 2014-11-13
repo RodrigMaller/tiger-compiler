@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
 
-#include "utils.h"
 #include "errormsg.h"
 
 bool any_errors = FALSE;
@@ -15,7 +14,7 @@ int EM_tok_pos = 0;
 
 extern FILE *yyin;
 
-static list line_pos = NULL;
+static L_list line_pos = NULL;
 
 void EM_newline(void)
 {
@@ -26,7 +25,7 @@ void EM_newline(void)
 void EM_error(int pos, char *msg,...)
 {
     va_list ap;
-    list lines = line_pos;
+    L_list lines = line_pos;
     int num = line_num;
     
     any_errors = TRUE;
